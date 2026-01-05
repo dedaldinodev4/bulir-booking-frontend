@@ -1,4 +1,4 @@
-#Company Bulir – Frontend Challenge
+# Company Bulir – Frontend Challenge
 
 ## Overview
 Web frontend of the Company Bulir booking application. Allows clients to book services, providers to manage their offerings, and admins to monitor the entire operation.
