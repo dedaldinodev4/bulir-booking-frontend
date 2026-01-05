@@ -24,6 +24,7 @@
     "apexcharts": "^4.7.0",
     "autoprefixer": "^10.4.22",
     "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
     "flatpickr": "^4.6.13",
     "next": "16.0.10",
     "next-auth": "^4.24.13",
@@ -35,11 +36,13 @@
     "react-dropzone": "^14.3.8",
     "react-redux": "^9.2.0",
     "swiper": "^11.2.10",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^2.6.0",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@svgr/webpack": "^8.1.0",
+    "@types/dotenv": "^8.2.3",
     "@types/node": "^20.19.25",
     "@types/react": "^19.2.1",
     "@types/react-dom": "^19.2.1",
