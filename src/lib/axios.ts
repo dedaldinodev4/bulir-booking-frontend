@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getSession } from "next-auth/react";
-import { env } from "../env";
+import { env } from "@/env";
 
 const api = axios.create({
   baseURL: `${env.API_BOOKING}`,
