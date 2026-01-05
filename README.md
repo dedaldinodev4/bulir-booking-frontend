@@ -12,11 +12,13 @@ Web frontend of the Company Bulir booking application. Allows clients to book se
 ## Technologies
 - React
 - Next
+- Redux
+- React Hook Form 
 - Zod
 - TypeScript
+- TanStack Query
 - TailwindCSS
-- Axios
-- React Query
+
 
 ## Running locally
 1. Clone the repository
@@ -26,4 +28,3 @@ Web frontend of the Company Bulir booking application. Allows clients to book se
 
 ## Tests
 - `npm run test`
-
