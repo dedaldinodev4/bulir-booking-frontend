@@ -1,4 +1,3 @@
-import { env } from "@/env";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -21,7 +20,7 @@ export const authOptions: NextAuthOptions = {
 
   
         const res = await fetch(
-          `${env.API_BOOKING}/auth/login`,
+          `${process.env.API_BOOKING}/auth/login`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -64,7 +63,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/signin",
   },
 
-  secret: env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

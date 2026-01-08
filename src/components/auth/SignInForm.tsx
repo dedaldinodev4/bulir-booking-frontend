@@ -1,30 +1,49 @@
 "use client";
+import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
+
 import Checkbox from "@/components/form/input/Checkbox";
-import Input from "@/components/form/input/InputField";
+import Input from "@/components/form/input/InputCustom";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
-import Link from "next/link";
-import React, { useState } from "react";
 
-import { useForm, SubmitHandler } from 'react-hook-form'
-
-type ISignInRequest = {
-  data: string;
-  password: string;
-}
+import { SignInSchema, SignInFormData } from "@/schemas/auth";
 
 export default function SignInForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [error, setError] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<ISignInRequest>()
+  } = useForm<SignInFormData>({
+    resolver: zodResolver(SignInSchema),
+  })
 
-  const onSubmit: SubmitHandler<ISignInRequest> =  async (data) => {
+  const onSubmit: SubmitHandler<SignInFormData> =  async (credentials) => {
     //await signIn(data);
+    const { data, password } = credentials;
+
+    const response = await signIn("credentials", {
+      data,
+      password,
+      redirect: false,
+    });
+
+    if (response?.error) {
+      setError("Credenciais inválidas");
+      return;
+    }
+
+    router.push("/");
+
   }
 
   return (
@@ -99,7 +118,12 @@ export default function SignInForm() {
                   <Label>
                     Email / NIF <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input {...register('data')} placeholder="Seu Email ou NIF" type="text" />
+                  <Input 
+                    {...register('data')} 
+                    placeholder="Seu Email ou NIF"
+                    error={!!errors.data}
+                    hint={errors.data?.message}
+                  />
                 </div>
                 <div>
                   <Label>
@@ -108,7 +132,9 @@ export default function SignInForm() {
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      placeholder="Entrar sua senha"
+                      placeholder="Digite sua senha"
+                      error={!!errors.password}
+                      hint={errors.password?.message}
                       {...register('password')}
                     />
                     <span
@@ -138,7 +164,7 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
+                  <Button className="w-full" size="sm" type="submit">
                     Entrar
                   </Button>
                 </div>
