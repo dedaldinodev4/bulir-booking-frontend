@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
 
       async authorize(credentials) {
         if (!credentials?.data || !credentials?.password) {
-          return null;
+          throw new Error("Email e senha são obrigatórios");
         }
 
         const res = await fetch(
@@ -35,8 +35,8 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!res.ok) {
-          console.error("Erro login API:", await res.text());
-          return null;
+          const error = await res.json();
+          throw new Error(error.message || "Credenciais inválidas");
         }
 
         const data = (await res.json()) as {
