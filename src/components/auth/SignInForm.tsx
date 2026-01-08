@@ -19,6 +19,7 @@ export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -27,15 +28,19 @@ export default function SignInForm() {
     resolver: zodResolver(SignInSchema),
   })
 
-  const onSubmit: SubmitHandler<SignInFormData> =  async (credentials) => {
+  const onSubmit: SubmitHandler<SignInFormData> = async (credentials) => {
     //await signIn(data);
     const { data, password } = credentials;
+    setError("");
+    setLoading(true);
 
     const response = await signIn("credentials", {
       data,
       password,
       redirect: false,
     });
+
+    setLoading(false);
 
     if (response?.error) {
       setError("Credenciais inválidas");
@@ -118,8 +123,8 @@ export default function SignInForm() {
                   <Label>
                     Email / NIF <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input 
-                    {...register('data')} 
+                  <Input
+                    {...register('data')}
                     placeholder="Seu Email ou NIF"
                     error={!!errors.data}
                     hint={errors.data?.message}
@@ -172,10 +177,13 @@ export default function SignInForm() {
             </form>
 
             <div className="mt-5">
+              {error && (
+                <p className="text-red-500 text-sm font-medium mb-3 text-center">{error}</p>
+              )}
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                 Não possui uma conta? {""}
                 <Link
-                  href="/auth/signup"
+                  href="/signup"
                   className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
                   Criar conta
