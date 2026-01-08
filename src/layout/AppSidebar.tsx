@@ -296,9 +296,9 @@ const AppSidebar: React.FC = () => {
       >
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
-            <h1 className="text-2xl font-bold">Booking.ao</h1>
+            <h1 className="text-2xl font-bold  text-gray-700 dark:text-gray-400">Booking.ao</h1>
           ) : (
-            <h1 className="text-sm font-bold">Booking.ao</h1>
+            <h1 className="text-sm font-bold  text-gray-700 dark:text-gray-400">Booking.ao</h1>
           )}
         </Link>
       </div>
