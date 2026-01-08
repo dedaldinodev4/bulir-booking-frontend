@@ -16,14 +16,17 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        if (!credentials) return null;
+        if (!credentials?.data || !credentials?.password) {
+          return null;
+        }
 
-  
         const res = await fetch(
           `${process.env.API_BOOKING}/auth/login`,
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
               data: credentials.data,
               password: credentials.password,
@@ -31,12 +34,31 @@ export const authOptions: NextAuthOptions = {
           }
         );
 
-        if (!res.ok) return null;
+        if (!res.ok) {
+          console.error("Erro login API:", await res.text());
+          return null;
+        }
 
-        const data = await res.json();
+        const data = (await res.json()) as {
+          token: string;
+          user: {
+            id: string;
+            name: string;
+            email: string;
+            identify: string;
+            role: "ADMIN" | "CLIENT" | "PROVIDER";
+          };
+          expiresIn: number;
+        };
+
         return {
           id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          role: data.user.role,
+          identify: data.user.identify,
           accessToken: data.token,
+          expiresIn: data.expiresIn,
         };
       },
     }),
@@ -45,16 +67,27 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user.accessToken;
+        token.accessToken = (user as any).accessToken;
+        token.role = (user as any).role;
+        token.identify = (user as any).identify;
+        token.expiresIn = (user as any).expiresIn;
         token.sub = user.id;
       }
+
       return token;
     },
 
-    // 📦 Exponha para o frontend
     async session({ session, token }) {
       session.accessToken = token.accessToken as string;
-      session.user.id = token.sub as string;
+
+      session.user = {
+        id: token.sub as string,
+        email: session.user.email!,
+        name: session.user.name!,
+        role: token.role as any,
+        identify: token.identify as string,
+      };
+
       return session;
     },
   },
