@@ -5,17 +5,17 @@ export default withAuth(
   function middleware(req) {
     const role = req.nextauth.token?.role;
 
-    if (req.nextUrl.pathname.startsWith("/admin") && role !== "admin") {
+    if (req.nextUrl.pathname.startsWith("/admin") && role !== "ADMIN") {
       return NextResponse.redirect(new URL("/unauthorized", req.url));
     }
   },
   {
     pages: {
-      signIn: "/auth/login",
+      signIn: "/signin",
     },
   }
 );
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
+  matcher: ["/:path*"],
 };
