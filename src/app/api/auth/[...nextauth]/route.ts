@@ -1,59 +1,72 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import axios from "axios";
 import { env } from "@/env";
+import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-export const authOptions = NextAuth({
+export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
+
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
+
       credentials: {
-        data: { label: "User", type: "text" },
+        data: { label: "Data", type: "text" },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials) {
-        try {
-          const response = await axios.post(`${env.API_BOOKING}/auth/login`, {
-            data: credentials?.data,
-            password: credentials?.password,
-          });
+        if (!credentials) return null;
 
-          const currentUser = response.data;
-
-          if (currentUser && currentUser.token) {
-            return {
-              id: currentUser.user.id,
-              email: currentUser.user.email,
-              role: currentUser.user.role,
-              accessToken: currentUser.token,
-            };
+  
+        const res = await fetch(
+          `${env.API_BOOKING}/auth/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              data: credentials.data,
+              password: credentials.password,
+            }),
           }
-          return null;
-        } catch {
-          return null;
-        }
+        );
+
+        if (!res.ok) return null;
+
+        const data = await res.json();
+        return {
+          id: data.user.id,
+          accessToken: data.token,
+        };
       },
     }),
   ],
-  session: { strategy: "jwt" },
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
         token.accessToken = user.accessToken;
+        token.sub = user.id;
       }
       return token;
     },
+
+    // 📦 Exponha para o frontend
     async session({ session, token }) {
-      if (session.user) {
-        session.user.role = token.role as string;
-        session.user.accessToken = token.accessToken;
-      }
+      session.accessToken = token.accessToken as string;
+      session.user.id = token.sub as string;
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
-});
+
+  pages: {
+    signIn: "/signin",
+  },
+
+  secret: env.NEXTAUTH_SECRET,
+};
 
 const handler = NextAuth(authOptions);
+
 export { handler as GET, handler as POST };
