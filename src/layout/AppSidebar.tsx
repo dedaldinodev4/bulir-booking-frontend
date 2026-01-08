@@ -20,7 +20,11 @@ import {
 
   UserCircleIcon,
 } from "../icons/index";
-import SidebarWidget from "./SidebarWidget";
+import { requireAuth } from "@/helpers/auth";
+
+interface AppSidebarProps {
+  role: "ADMIN" | "PROVIDER" | "CLIENT";
+}
 
 type NavItem = {
   name: string;
@@ -58,22 +62,6 @@ const navItems: NavItem[] = [
     icon: <ListIcon />,
     subItems: [{ name: "Minhas Reservas", path: "/bookings", pro: false }],
   },
-  {
-    name: "Clientes",
-    icon: <GroupIcon />,
-    subItems: [
-      { name: "Novo Cliente", path: "/clients/create", pro: false },
-      { name: "Listar Clientes", path: "/clients/list", pro: false }
-    ]
-  },
-  {
-    name: "Prestadores",
-    icon: <GroupIcon />,
-    subItems: [
-      { name: "Novo Prestador", path: "/providers/create", pro: false },
-      { name: "Listar Prestadores", path: "/providers/list", pro: false }
-    ]
-  },
   
 ];
 
@@ -94,6 +82,7 @@ const accountItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+
 
   const renderMenuItems = (
     navItems: NavItem[],

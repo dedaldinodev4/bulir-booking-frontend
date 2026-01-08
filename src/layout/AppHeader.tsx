@@ -6,11 +6,17 @@ import { useSidebar } from "@/context/SidebarContext";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState ,useEffect,useRef} from "react";
+import { useSession } from "next-auth/react";
+
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
+
+  const { data: session, status } = useSession();
+
+
 
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
@@ -169,7 +175,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
-          <UserDropdown /> 
+          <UserDropdown email={session?.user?.email || ""} name={session?.user?.name || ""}/> 
     
         </div>
       </div>
