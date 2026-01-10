@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { toast } from "react-toastify";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -17,6 +18,7 @@ export const authOptions: NextAuthOptions = {
 
       async authorize(credentials) {
         if (!credentials?.data || !credentials?.password) {
+          toast.warning('Email e senha são obrigatórios.')
           throw new Error("Email e senha são obrigatórios");
         }
 
@@ -36,6 +38,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!res.ok) {
           const error = await res.json();
+          toast.error('Credenciais inválidas.')
           throw new Error(error.message || "Credenciais inválidas");
         }
 

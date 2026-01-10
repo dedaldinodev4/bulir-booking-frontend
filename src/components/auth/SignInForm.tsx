@@ -13,6 +13,7 @@ import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 
 import { SignInSchema, SignInFormData } from "@/schemas/auth";
+import { toast } from "react-toastify";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function SignInForm() {
       setError("Credenciais inválidas");
       return;
     }
+    toast.success('Autentição feita com sucesso!')
 
     router.push("/");
 
