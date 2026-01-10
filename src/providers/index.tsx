@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
 import { ReactQueryProvider } from "./react-query";
 import { ReduxProvider } from '@/redux/provider';
+import { ToastifyProvider } from "./react-toastify";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -14,7 +15,9 @@ export function Providers({ children }: ProvidersProps) {
     <SessionProvider>
       <ReactQueryProvider>
         <ReduxProvider>
-          {children}
+          <ToastifyProvider>
+            {children}
+          </ToastifyProvider>
         </ReduxProvider>
       </ReactQueryProvider>
     </SessionProvider>
