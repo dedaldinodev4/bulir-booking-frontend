@@ -1,8 +1,9 @@
-import UserAddressCard from "@/components/user-profile/UserAddressCard";
+import React from "react";
+import { Metadata } from "next";
+
 import UserInfoCard from "@/components/user-profile/UserInfoCard";
 import UserMetaCard from "@/components/user-profile/UserMetaCard";
-import { Metadata } from "next";
-import React from "react";
+import UserWalletCard from "@/components/user-profile/UserWalletCard";
 
 export const metadata: Metadata = {
   title: "booking.ao | Perfil",
@@ -20,7 +21,7 @@ export default function Profile() {
         <div className="space-y-6">
           <UserMetaCard />
           <UserInfoCard />
-          <UserAddressCard />
+          <UserWalletCard />
         </div>
       </div>
     </div>
