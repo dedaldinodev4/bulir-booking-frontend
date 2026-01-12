@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const res = await fetch(
-          `${process.env.API_BOOKING}/auth/login`,
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
           {
             method: "POST",
             headers: {
