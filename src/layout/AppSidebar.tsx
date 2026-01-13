@@ -43,8 +43,8 @@ const navItems: NavItem[] = [
     icon: <BoxCubeIcon />,
     name: "Serviços",
     subItems: [
-      { name: "Novo Serviço", path: "/services/create", pro: false },
-      { name: "Listar", path: "/services/list", pro: false }
+      { name: "Novo Serviço", path: "/services/new", pro: false },
+      { name: "Listar", path: "/services", pro: false }
     ],
   },
   {
@@ -66,11 +66,6 @@ const navItems: NavItem[] = [
 ];
 
 const accountItems: NavItem[] = [
-  {
-    icon: <DollarLineIcon />,
-    name: "Minha Carteira",
-    path: "/wallets",
-  }, 
   {
     icon: <UserCircleIcon />,
     name: "Meu Perfil",
