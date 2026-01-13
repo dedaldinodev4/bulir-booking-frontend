@@ -3,20 +3,41 @@ import React from "react";
 import { useModal } from "../../hooks/useModal";
 import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
-import Input from "../form/input/InputField";
+import Input from "../form/input/InputCustom";
 import Label from "../form/Label";
 import { useUserData } from "@/hooks/useUserData";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  UpdateUserSchema,
+  UpdateUserDTO,
+} from "@/schemas/user";
+import { useUpdateUser } from "@/hooks/users/useUpdateUser";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 
 export default function UserInfoCard() {
   const { isOpen, openModal, closeModal } = useModal();
   const { data, error, status } = useUserData();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<UpdateUserDTO>({
+    resolver: zodResolver(UpdateUserSchema),
+  })
+  const updateUser = useUpdateUser();
+  const router = useRouter();
 
-  const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
-    closeModal();
-  };
+  const onSubmit: SubmitHandler<UpdateUserDTO> = async (userData) => {
+    updateUser.mutate({ id: data.id || '', payload: userData });
+    setTimeout(() => {
+      toast.info('Alteração feita com sucesso!')
+      router.push("/");
+    }, 2000)
+
+  }
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -40,7 +61,7 @@ export default function UserInfoCard() {
                 Número de Identificação Fiscal (NIF)
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-              {data && data.identify}
+                {data && data.identify}
               </p>
             </div>
 
@@ -49,7 +70,7 @@ export default function UserInfoCard() {
                 Endereço de Email
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-              {data && data.email}
+                {data && data.email}
               </p>
             </div>
           </div>
@@ -88,7 +109,7 @@ export default function UserInfoCard() {
               Atualize seus dados pessoais.
             </p>
           </div>
-          <form className="flex flex-col">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
             <div className="custom-scrollbar h-[250px] overflow-y-auto px-2 pb-3">
               <div className="mt-2">
                 <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
@@ -98,17 +119,35 @@ export default function UserInfoCard() {
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Nome</Label>
-                    <Input type="text" defaultValue={data && data.name || ""} />
+                    <Input
+                      type="text"
+                      {...register('name')}
+                      defaultValue={data && data.name || ""}
+                      error={!!errors.name}
+                      hint={errors.name?.message}
+                    />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Número de Identificação Fiscal (NIF)</Label>
-                    <Input type="text" defaultValue={data && data.identify || ""}/>
+                    <Input
+                      type="text"
+                      {...register('identify')}
+                      defaultValue={data && data.identify || ""}
+                      error={!!errors.identify}
+                      hint={errors.identify?.message}
+                    />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Endereço de Email</Label>
-                    <Input type="text" defaultValue={data && data.email || ""} />
+                    <Input
+                      type="text"
+                      {...register('email')}
+                      defaultValue={data && data.email || ""}
+                      error={!!errors.email}
+                      hint={errors.email?.message}
+                    />
                   </div>
                 </div>
               </div>
@@ -117,7 +156,7 @@ export default function UserInfoCard() {
               <Button size="sm" variant="outline" onClick={closeModal}>
                 Cancelar
               </Button>
-              <Button size="sm" onClick={handleSave}>
+              <Button size="sm" type="submit">
                 Salvar Alteração
               </Button>
             </div>
