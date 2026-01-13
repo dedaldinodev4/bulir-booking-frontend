@@ -4,13 +4,15 @@ import { Metadata } from "next";
 import UserInfoCard from "@/components/user-profile/UserInfoCard";
 import UserMetaCard from "@/components/user-profile/UserMetaCard";
 import UserWalletCard from "@/components/user-profile/UserWalletCard";
+import { requireAuth } from "@/helpers/auth";
 
 export const metadata: Metadata = {
   title: "booking.ao | Perfil",
   description: "",
 };
 
-export default function Profile() {
+export default async function Profile() {
+  const session = await requireAuth();
 
   return (
     <div>

@@ -7,8 +7,7 @@ import StatisticsChart from "@/components/ecommerce/StatisticsChart";
 import { requireAuth } from "@/helpers/auth";
 
 export const metadata: Metadata = {
-  title:
-    "booking.ao | Dashboard",
+  title:"booking.ao | Dashboard",
   description: "",
 };
 
