@@ -12,7 +12,7 @@ import {
 import Badge from "../ui/badge/Badge";
 import PencilIcon from '../../icons/pencil.svg'
 import TrashIcon from "../../icons/trash.svg"
-import Image from "next/image";
+
 import { useServiceProvider } from "@/hooks/useServiceProvider";
 import { useSession } from "next-auth/react";
 import { formattedCurrency } from "@/utils/currency";
