@@ -11,11 +11,12 @@ export const ServiceSchema = z.object({
     name: z.string(),
     identify: z.string(),
     email: z.string(),
-  }),
+  }).optional(),
   status: z.boolean(),
   created_at: z.string(),
   updated_at: z.string(),
 });
+
 
 export const CreateServiceSchema = z.object({
   name: z.string().min(3, 'Preenchimento de pelo menos 3 caracteres.'),

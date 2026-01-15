@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,14 +12,15 @@ import {
 import { useSession } from "next-auth/react";
 import { formattedCurrency } from "@/utils/currency";
 import { useServices } from "@/hooks/useServices";
-import Pagination from "./Pagination";
 
 import { useAppSelector, AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setPage } from "@/redux/features/pagination-slice";
 
 
+
 export default function ServiceTablePagination() {
+
 
   const { data: session, status } = useSession();
   const dispatch = useDispatch<AppDispatch>();
@@ -27,6 +28,7 @@ export default function ServiceTablePagination() {
 
   const { data, isLoading, isFetching } = useServices(page, limit)
   const totalPages = data?.paginator.pages || 1;
+  
 
   const pagesAroundCurrent = Array.from(
     { length: Math.min(3, totalPages - 1 || 1) },
@@ -38,6 +40,8 @@ export default function ServiceTablePagination() {
   if (!data?.data.length) {
     return <p>Nenhum serviço encontrado.</p>;
   }
+
+ 
 
   return (
     <>
@@ -89,10 +93,10 @@ export default function ServiceTablePagination() {
                       {formattedCurrency(service.price)}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {service.provider.name}
+                      {service?.provider?.name}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                      {service.provider.email}
+                      {service?.provider?.email}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                       <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden">
@@ -146,6 +150,7 @@ export default function ServiceTablePagination() {
         >
           Próximo
         </button>
-      </div> </>
+      </div>
+    </>
   );
 }
