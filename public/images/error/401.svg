@@ -1,0 +1,25 @@
+<svg width="472" height="158" viewBox="0 0 472 158" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Número 4 -->
+  <rect x="0.0405" y="0.5224" width="32.6255" height="77.5957" rx="6.2627" fill="#465FFF"/>
+  <rect x="75.8726" y="3.1674" width="32.6255" height="154.31" rx="6.2627" fill="#465FFF"/>
+  <rect x="16.7939" y="91.3442" width="32.6255" height="77.5957" rx="6.2627"
+    transform="rotate(-90 16.7939 91.3442)" fill="#465FFF"/>
+
+  <!-- Número 0 -->
+  <rect x="152.769" y="15.167" width="166.462" height="130.311" rx="28"
+    stroke="#465FFF" stroke-width="24"/>
+
+  <!-- Detalhes internos do 0 -->
+  <rect x="203.103" y="41.7015" width="22.1453" height="20.7141" rx="2.6343"
+    fill="#465FFF"/>
+  <rect x="246.752" y="41.7015" width="22.1453" height="20.7141" rx="2.6343"
+    fill="#465FFF"/>
+  <rect x="191.654" y="98.2303" width="22.1453" height="20.7141" rx="2.6343"
+    fill="#465FFF"/>
+  <rect x="258.201" y="98.2303" width="22.1453" height="20.7141" rx="2.6343"
+    fill="#465FFF"/>
+
+  <!-- Número 1 -->
+  <rect x="439.334" y="3.1674" width="32.6255" height="154.31" rx="6.2627"
+    fill="#465FFF"/>
+</svg>

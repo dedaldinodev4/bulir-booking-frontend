@@ -5,11 +5,11 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "booking.ao | Error 404 ",
-  description: "",
+  title: "booking.ao | Error 401",
+  description:"",
 };
 
-export default function Error404() {
+export default function Error401() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden z-1">
       <GridShape />
@@ -19,22 +19,22 @@ export default function Error404() {
         </h1>
 
         <Image
-          src="/images/error/404.svg"
-          alt="404"
+          src="/images/error/401.svg"
+          alt="401"
           className="dark:hidden"
           width={472}
           height={152}
         />
         <Image
-          src="/images/error/404-dark.svg"
-          alt="404"
+          src="/images/error/401-dark.svg"
+          alt="401"
           className="hidden dark:block"
           width={472}
           height={152}
         />
 
         <p className="mt-10 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
-          Não conseguimos encontrar a página que procura!
+          Não tens autorização para acessar a página.
         </p>
 
         <Link

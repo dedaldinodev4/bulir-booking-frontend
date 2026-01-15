@@ -18,9 +18,10 @@ export const ServiceSchema = z.object({
 });
 
 export const CreateServiceSchema = z.object({
-  name: z.string(),
-  price: z.string(),
-  description: z.string(),
+  name: z.string().min(3, 'Preenchimento de pelo menos 3 caracteres.'),
+  price: z.string().min(3, 'Preço minímo é de 500KZ.'),
+  providerId: z.string().optional(),
+  description: z.string().optional()
 })
 
 export const PaginatedServicesSchema = z.object({
@@ -43,5 +44,5 @@ export const UpdateServiceSchema = CreateServiceSchema.partial();
 export type Service = z.infer<typeof ServiceSchema>;
 export type PaginatedServices = z.infer<typeof PaginatedServicesSchema>;
 export type CreateServiceDTO = z.infer<typeof CreateServiceSchema>;
-export type UpdateSrviceDTO = z.infer<typeof UpdateServiceSchema>
+export type UpdateServiceDTO = z.infer<typeof UpdateServiceSchema>
 

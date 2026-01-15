@@ -21,7 +21,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     }
 
     if (allowedRoles && !allowedRoles.includes(session.user.role as any)) {
-      router.push("/");
+      router.push("/error-401");
       return;
     }
   }, [session, status, allowedRoles, router]);

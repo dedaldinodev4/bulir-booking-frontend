@@ -4,6 +4,7 @@ import {
   CreateServiceSchema,
   UpdateServiceSchema
 } from "@/schemas/service";
+import { z } from "zod";
 
 type QueryPagination = {
   page: number; 
@@ -13,9 +14,18 @@ type QueryPagination = {
 export const servicesService = { 
 
   async create(payload: unknown) {
-    const validPayload = CreateServiceSchema.parse(payload);
-    const { data } = await api.post("/services", validPayload);
-    return data;
+
+    try {
+      const validPayload = CreateServiceSchema.parse(payload);
+      const { data } = await api.post("/services", validPayload);
+      return data;
+      
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        console.log("Erro de validação:");
+        console.log(error); // lista detalhada dos erros
+      }
+    }
   },
 
   async getServices({ page, limit,}: QueryPagination) {
