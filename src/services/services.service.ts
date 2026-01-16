@@ -24,7 +24,7 @@ export const servicesService = {
     } catch (error) {
       if (error instanceof z.ZodError) {
         console.log("Erro de validação:");
-        console.log(error); // lista detalhada dos erros
+        console.log(error);
       }
     }
   },

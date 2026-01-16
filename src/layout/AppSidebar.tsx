@@ -55,7 +55,7 @@ const navItems: NavItem[] = [
   {
     icon: <PieChartIcon/>,
     name: "Transações",
-    path: "/transations",
+    path: "/transactions",
   },
   {
     name: "Reservas",
