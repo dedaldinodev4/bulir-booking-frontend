@@ -17,12 +17,13 @@ import { setPage } from "@/redux/features/pagination-slice";
 import Badge from "../ui/badge/Badge";
 import moment from 'moment'
 import { useBookings } from "@/hooks/useBookings";
-import MoreDotIcon from '../../icons/more-dot.svg'
-import { Dropdown } from "../ui/dropdown/Dropdown";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { CheckCircleIcon, ErrorIcon, PencilIcon, TrashBinIcon } from "@/icons";
+import { CheckCircleIcon, ErrorIcon } from "@/icons";
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "../ui/modal";
+import { Booking } from "@/schemas/booking";
+
+
+
 
 
 
@@ -32,6 +33,9 @@ export default function BookingsProviderTable() {
   const dispatch = useDispatch<AppDispatch>();
   const { page, limit } = useAppSelector((state) => state.paginationReducer);
   const [isOpen, setIsOpen] = useState(false);
+  const [bookingSelected, setBookingSelected] = useState<Booking | null>(null)
+  const [bookingCancelSelected, setBookingCancelSelected] = useState<Booking | null>(null)
+
 
   const completedModal = useModal();
   const cancelledModal = useModal();
@@ -53,6 +57,24 @@ export default function BookingsProviderTable() {
 
   if (!data?.data.length) {
     return <p>Nenhuma reserva encontrada.</p>;
+  }
+
+  const handleCompleteBooking = () => {
+    console.log(bookingSelected);
+  }
+
+  const handleCancelBooking = () => {
+    console.log(bookingCancelSelected);
+  }
+
+  const showCompleteModal = (booking: Booking) => {
+    setBookingSelected(booking)
+    completedModal.openModal();
+  }
+
+  const showCancelModal = (booking: Booking) => {
+    setBookingCancelSelected(booking)
+    cancelledModal.openModal();
   }
 
 
@@ -143,7 +165,7 @@ export default function BookingsProviderTable() {
                             title="Finalizar"
                             aria-label="Finalizar"
                             className="px-3 py-2 text-sm text-green-800 hover:bg-gray-100"
-                            onClick={completedModal.openModal}
+                            onClick={() => showCompleteModal(booking)}
                           >
                             <CheckCircleIcon />
 
@@ -152,7 +174,7 @@ export default function BookingsProviderTable() {
                             title="Cancelar"
                             aria-label="Cancelar"
                             className="px-3 py-2 text-sm text-red-600 hover:bg-red-100"
-                            onClick={cancelledModal.openModal}
+                            onClick={() => showCancelModal(booking)}
                           >
                             <ErrorIcon />
                           </button>
@@ -206,6 +228,7 @@ export default function BookingsProviderTable() {
       </div>
 
       <Modal
+        key={bookingSelected?.id}
         isOpen={completedModal.isOpen}
         onClose={completedModal.closeModal}
         className="max-w-[600px] p-5 lg:p-10"
@@ -255,6 +278,7 @@ export default function BookingsProviderTable() {
 
           <div className="flex items-center justify-center w-full gap-3 mt-7">
             <button
+              onClick={() => handleCompleteBooking()}
               type="button"
               className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-blue-light-500 shadow-theme-xs hover:bg-blue-light-600 sm:w-auto"
             >
@@ -263,9 +287,10 @@ export default function BookingsProviderTable() {
           </div>
         </div>
       </Modal>
-      
+
       {/* Warning Modal */}
       <Modal
+        key={bookingCancelSelected?.id}
         isOpen={cancelledModal.isOpen}
         onClose={cancelledModal.closeModal}
         className="max-w-[600px] p-5 lg:p-10"
@@ -316,6 +341,7 @@ export default function BookingsProviderTable() {
 
           <div className="flex items-center justify-center w-full gap-3 mt-7">
             <button
+              onClick={() => handleCancelBooking("")}
               type="button"
               className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-500 shadow-theme-xs hover:bg-error-600 sm:w-auto"
             >

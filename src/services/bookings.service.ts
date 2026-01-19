@@ -51,6 +51,16 @@ export const bookingsService = {
     return data;
   },
 
+  async complete(id: string) {
+    const { data } = await api.put(`/bookings/${id}/complete`, {});
+    return data;
+  },
+
+  async cancel(id: string) {
+    const { data } = await api.put(`/bookings/${id}/cancel`, {});
+    return data;
+  },
+
   async getOneBooking(id: string ) {
     const response = await api.get(`/bookings/${id}`);
     return BookingSchema.parse(response.data)
