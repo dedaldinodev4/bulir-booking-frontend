@@ -21,6 +21,10 @@ import { CheckCircleIcon, ErrorIcon } from "@/icons";
 import { useModal } from "@/hooks/useModal";
 import { Modal } from "../ui/modal";
 import { Booking } from "@/schemas/booking";
+import { useCompleteBooking } from "@/hooks/bookings/useCompleteBooking";
+import { useCancelBooking } from "@/hooks/bookings/useCancelBooking";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 
 
@@ -34,11 +38,12 @@ export default function BookingsProviderTable() {
   const { page, limit } = useAppSelector((state) => state.paginationReducer);
   const [isOpen, setIsOpen] = useState(false);
   const [bookingSelected, setBookingSelected] = useState<Booking | null>(null)
-  const [bookingCancelSelected, setBookingCancelSelected] = useState<Booking | null>(null)
-
-
+  const [bookingCancelSelected, setBookingCancelSelected] = useState<Booking | null>(null);
+  const router = useRouter();
   const completedModal = useModal();
   const cancelledModal = useModal();
+  const completeBooking = useCompleteBooking();
+  const cancelBooking = useCancelBooking();
 
   const { data, isLoading, isFetching } = useBookings({
     page,
@@ -60,11 +65,25 @@ export default function BookingsProviderTable() {
   }
 
   const handleCompleteBooking = () => {
-    console.log(bookingSelected);
+    if (bookingSelected?.id) {
+      completeBooking.mutate(bookingSelected.id || "")
+      setTimeout(() => {
+        completedModal.closeModal();
+        toast.success('Serviço completo com sucesso.')
+        router.push("/");
+      }, 1000)
+    }
   }
 
   const handleCancelBooking = () => {
-    console.log(bookingCancelSelected);
+    if (bookingCancelSelected?.id) {
+      cancelBooking.mutate(bookingCancelSelected.id || "")
+      setTimeout(() => {
+        completedModal.closeModal();
+        toast.success('Serviço cancelado com sucesso.')
+        router.push("/");
+      }, 1000)
+    }
   }
 
   const showCompleteModal = (booking: Booking) => {
