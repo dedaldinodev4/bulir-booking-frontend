@@ -8,7 +8,7 @@ import {
 import { z } from "zod";
 
 type QueryPagination = {
-  page: number; 
+  page: number;
   limit: number;
   clientId?: string;
   providerId?: string;
@@ -18,24 +18,15 @@ type QueryPagination = {
   status?: "CONFIRMED" | "PENDING" | "CANCELLED" | "COMPLETED";
 }
 
-export const bookingsService = { 
+export const bookingsService = {
 
   async create(payload: unknown) {
-
-    try {
-      const validPayload = CreateBookingSchema.parse(payload);
-      const { data } = await api.post("/bookings", validPayload);
-      return data;
-      
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        console.log("Erro de validação:");
-        console.log(error);
-      }
-    }
+    const validPayload = CreateBookingSchema.parse(payload);
+    const { data } = await api.post("/bookings", validPayload);
+    return data;
   },
 
-  async getBookings({ page, limit, 
+  async getBookings({ page, limit,
     order, providerId, clientId, status, serviceId, orderBy }: QueryPagination) {
     let queryString = `/bookings?page=${page}&limit=${limit}&providerId=${providerId}`;
     if (clientId) {
@@ -45,7 +36,7 @@ export const bookingsService = {
     return PaginatedBookingsSchema.parse(response.data);
   },
 
-  async update({id, payload, }: { id: string; payload: unknown;}) {
+  async update({ id, payload, }: { id: string; payload: unknown; }) {
     const validPayload = UpdateBookingSchema.parse(payload);
     const { data } = await api.put(`/bookings/${id}`, validPayload);
     return data;
@@ -61,12 +52,12 @@ export const bookingsService = {
     return data;
   },
 
-  async getOneBooking(id: string ) {
+  async getOneBooking(id: string) {
     const response = await api.get(`/bookings/${id}`);
     return BookingSchema.parse(response.data)
   },
 
-  async delete(id: string ) {
+  async delete(id: string) {
     const response = await api.delete(`/bookings/${id}`);
     return response.data;
   },
