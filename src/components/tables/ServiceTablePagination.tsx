@@ -16,6 +16,13 @@ import { useServices } from "@/hooks/useServices";
 import { useAppSelector, AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setPage } from "@/redux/features/pagination-slice";
+import { Modal } from "../ui/modal";
+import { useModal } from "@/hooks/useModal";
+import Label from "../form/Label";
+import Input from "../form/input/InputCustom";
+import Button from "../ui/button/Button";
+import type { Service } from "@/schemas/service";
+import TextArea from "../form/input/TextArea";
 
 
 
@@ -25,10 +32,12 @@ export default function ServiceTablePagination() {
   const { data: session, status } = useSession();
   const dispatch = useDispatch<AppDispatch>();
   const { page, limit } = useAppSelector((state) => state.paginationReducer);
+  const [serviceSelected, setServiceSelected] = useState<Service | null>(null)
 
   const { data, isLoading, isFetching } = useServices(page, limit)
   const totalPages = data?.paginator.pages || 1;
-  
+  const { isOpen, openModal, closeModal } = useModal();
+
 
   const pagesAroundCurrent = Array.from(
     { length: Math.min(3, totalPages - 1 || 1) },
@@ -41,7 +50,12 @@ export default function ServiceTablePagination() {
     return <p>Nenhum serviço encontrado.</p>;
   }
 
- 
+  const openModalWithService = (serviceItem: Service) => {
+    setServiceSelected(serviceItem)
+    openModal()
+  }
+
+
 
   return (
     <>
@@ -102,7 +116,8 @@ export default function ServiceTablePagination() {
                       <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden">
                         <button
                           className="px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                          disabled={service.status}
+                          disabled={!service.status}
+                          onClick={() => openModalWithService(service)}
                         >
                           Contratar
                         </button>
@@ -151,6 +166,54 @@ export default function ServiceTablePagination() {
           Próximo
         </button>
       </div>
+
+      <Modal
+        key={serviceSelected?.id}
+        isOpen={isOpen}
+        onClose={closeModal}
+        className="max-w-[584px] p-5 lg:p-10"
+      >
+        <form className="">
+          <h4 className="mb-6 text-lg font-medium text-gray-800 dark:text-white/90">
+            Contrato
+          </h4>
+
+          <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
+            <div className="col-span-1">
+              <Label>Serviço</Label>
+              <Input type="text" disabled defaultValue={serviceSelected?.name || ""} />
+            </div>
+
+            <div className="col-span-1">
+              <Label>Prestador</Label>
+              <Input type="text" disabled defaultValue={serviceSelected?.provider?.name || ""} />
+            </div>
+
+            <div className="col-span-1">
+              <Label>Preço</Label>
+              <Input type="text" disabled defaultValue={serviceSelected?.price || ""} />
+            </div>
+
+            <div className="col-span-1">
+              <Label>Descrição</Label>
+              <TextArea
+                rows={3}
+                disabled
+                value={serviceSelected?.description || ""}
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end w-full gap-3 mt-6">
+            <Button size="sm" variant="outline" onClick={closeModal}>
+              Cancelar
+            </Button>
+            <Button size="sm">
+              Avançar
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }
