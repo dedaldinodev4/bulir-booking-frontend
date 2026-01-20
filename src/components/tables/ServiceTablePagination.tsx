@@ -23,6 +23,9 @@ import Input from "../form/input/InputCustom";
 import Button from "../ui/button/Button";
 import type { Service } from "@/schemas/service";
 import TextArea from "../form/input/TextArea";
+import { useCreateBooking } from "@/hooks/bookings/useCreateBooking";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 
 
@@ -33,10 +36,12 @@ export default function ServiceTablePagination() {
   const dispatch = useDispatch<AppDispatch>();
   const { page, limit } = useAppSelector((state) => state.paginationReducer);
   const [serviceSelected, setServiceSelected] = useState<Service | null>(null)
+  const router = useRouter();
 
   const { data, isLoading, isFetching } = useServices(page, limit)
   const totalPages = data?.paginator.pages || 1;
   const { isOpen, openModal, closeModal } = useModal();
+  const createBooking = useCreateBooking();
 
 
   const pagesAroundCurrent = Array.from(
@@ -53,6 +58,22 @@ export default function ServiceTablePagination() {
   const openModalWithService = (serviceItem: Service) => {
     setServiceSelected(serviceItem)
     openModal()
+  }
+
+  const saveBooking = () => {
+    if (serviceSelected) {
+      createBooking.mutate({
+        serviceId: serviceSelected.id,
+        providerId: serviceSelected.providerId,
+        price: serviceSelected.price,
+        clientId: session?.user.id
+      })
+
+      setTimeout(() => {
+        toast.success('Contrato feito com sucesso!')
+        router.push("/");
+      }, 2000)
+    }
   }
 
 
@@ -208,7 +229,7 @@ export default function ServiceTablePagination() {
             <Button size="sm" variant="outline" onClick={closeModal}>
               Cancelar
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={() => saveBooking()}>
               Avançar
             </Button>
           </div>
