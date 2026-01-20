@@ -48,11 +48,6 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    icon: <CalenderIcon />,
-    name: "Calendário",
-    path: "/calendar",
-  },
-  {
     icon: <PieChartIcon/>,
     name: "Transações",
     path: "/transactions",

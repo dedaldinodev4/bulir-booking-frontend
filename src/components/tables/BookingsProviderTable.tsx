@@ -179,6 +179,7 @@ export default function BookingsProviderTable() {
 
                     <TableCell className="relative px-4 py-3 text-start text-theme-sm text-gray-500 dark:text-gray-400">
                       {booking.status === "CONFIRMED" && (
+                        
                         <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden">
                           <button
                             title="Finalizar"
@@ -307,7 +308,7 @@ export default function BookingsProviderTable() {
         </div>
       </Modal>
 
-      {/* Warning Modal */}
+     
       <Modal
         key={bookingCancelSelected?.id}
         isOpen={cancelledModal.isOpen}
@@ -360,7 +361,7 @@ export default function BookingsProviderTable() {
 
           <div className="flex items-center justify-center w-full gap-3 mt-7">
             <button
-              onClick={() => handleCancelBooking("")}
+              onClick={() => handleCancelBooking()}
               type="button"
               className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white rounded-lg bg-error-500 shadow-theme-xs hover:bg-error-600 sm:w-auto"
             >
