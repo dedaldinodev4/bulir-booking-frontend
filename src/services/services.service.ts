@@ -3,7 +3,8 @@ import {
   PaginatedServicesSchema,
   CreateServiceSchema,
   UpdateServiceSchema,
-  ServiceSchema
+  ServiceSchema,
+  ServiceArraySchema
 } from "@/schemas/service";
 import { z } from "zod";
 
@@ -43,6 +44,11 @@ export const servicesService = {
   async getOneService(id: string ) {
     const response = await api.get(`/services/${id}`);
     return ServiceSchema.parse(response.data)
+  },
+
+  async getServiceByProvider(providerId: string ) {
+    const response = await api.get(`/services/byProvider/${providerId}`);
+    return ServiceArraySchema.parse(response.data)
   },
 
   async delete(id: string ) {

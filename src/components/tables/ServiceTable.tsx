@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from "react";
-import Decimal from 'decimal.js'
 import {
   Table,
   TableBody,
@@ -13,12 +12,12 @@ import Badge from "../ui/badge/Badge";
 import PencilIcon from '../../icons/pencil.svg'
 import TrashIcon from "../../icons/trash.svg"
 
-import { useServiceProvider } from "@/hooks/useServiceProvider";
+import { useServiceProvider } from "@/hooks/services/useServiceProvider";
 import { useSession } from "next-auth/react";
 import { formattedCurrency } from "@/utils/currency";
 
-import { UpdateServiceSchema, type Service, type UpdateServiceDTO } from "@/schemas/service";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { UpdateServiceSchema, Service, UpdateServiceDTO } from "@/schemas/service";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateService } from "@/hooks/services/useUpdateService";
 import { useRouter } from "next/navigation";

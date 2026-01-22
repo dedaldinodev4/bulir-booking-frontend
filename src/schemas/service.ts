@@ -47,3 +47,6 @@ export type PaginatedServices = z.infer<typeof PaginatedServicesSchema>;
 export type CreateServiceDTO = z.infer<typeof CreateServiceSchema>;
 export type UpdateServiceDTO = z.infer<typeof UpdateServiceSchema>
 
+export const ServiceArraySchema = z.array(ServiceSchema);
+export type IServiceArray = z.infer<typeof ServiceArraySchema>;
+
