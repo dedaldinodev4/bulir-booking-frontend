@@ -1,5 +1,6 @@
 import { 
   bookingSuccessRate, 
+  cancelledBookings, 
   completedBookings 
 } from "./bookings.metrics"
 import { 
@@ -19,6 +20,7 @@ export function clientMetrics({
   return {
     totalBookings: bookings.length,
     completedBookings: completedBookings(bookings),
+    cancelledBookings: cancelledBookings(bookings),
     totalSpent: calculateGMV(transactions),
     transactionRate: transactionSuccessRate(transactions),
     bookingRate: bookingSuccessRate(bookings)

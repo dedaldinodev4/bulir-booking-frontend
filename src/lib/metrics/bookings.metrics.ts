@@ -1,5 +1,6 @@
 import { Booking } from "@/schemas/booking";
 import type { IBookingRate } from "@/schemas/metrics";
+import { isCurrentMonth } from "@/utils/date";
 
 export function totalBookings(bookings: Booking[]): number {
   return bookings.length
@@ -13,12 +14,26 @@ export function cancelledBookings(bookings: Booking[]): number {
   return bookings.filter(b => b.status === 'CANCELLED').length
 }
 
+export function currentMonthBookings(bookings: Booking[]): Booking[] {
+  return bookings.filter(booking => isCurrentMonth(
+    new Date(booking.created_at))
+  )
+}
+
 export function cancellationRate(bookings: Booking[]): number {
   const total = bookings.length
   if (total === 0) return 0
 
   const cancelled = cancelledBookings(bookings)
   return (cancelled / total) * 100
+}
+
+export function completionRate(bookings: Booking[]): number {
+  const total = bookings.length
+  if (total === 0) return 0
+
+  const completed = completedBookings(bookings)
+  return (completed / total) * 100
 }
 
 export function averageBookingValue(bookings: Booking[]): number {

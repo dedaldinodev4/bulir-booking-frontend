@@ -28,6 +28,7 @@ export const MetricsParams = z.object({
 export const ClientMetrics = z.object({
   totalBookings: z.number(),
   completedBookings: z.number(),
+  cancelledBookings: z.number(),
   totalSpent: z.number(),
   bookingRate: BookingRate,
   transactionRate: TransactionRate

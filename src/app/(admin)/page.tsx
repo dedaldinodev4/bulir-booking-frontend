@@ -26,9 +26,6 @@ export default async function Dashboard() {
         <MonthlyTarget />
       </div>
 
-      <div className="col-span-12">
-        <StatisticsChart />
-      </div>
     </div>
 
   );

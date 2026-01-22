@@ -1,11 +1,11 @@
 import { Transaction } from "@/schemas/transaction";
+import { isCurrentMonth } from "@/utils/date";
 
 export function calculateGMV(transactions: Transaction[]): number {
   return transactions
     .filter(t => t.status === 'PAID')
     .reduce((sum, t) => sum + Number(t.amount), 0)
 }
-
 
 export function totalTransactions(transactions: Transaction[]): number {
   return transactions.length
@@ -17,6 +17,12 @@ export function paidTransactionsCount(transactions: Transaction[]): number {
 
 export function failedTransactionsCount(transactions: Transaction[]): number {
   return transactions.filter(t => t.status === 'FAILED').length
+}
+
+export function currentMonthTransactions(transactions: Transaction[]): Transaction[] {
+  return transactions.filter(transaction => isCurrentMonth(
+    new Date(transaction.created_at))
+  )
 }
 
 export function paymentConversionRate(transactions: Transaction[]): number {
