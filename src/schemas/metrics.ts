@@ -53,9 +53,16 @@ export const GeneralMetrics = z.object({
 })
 
 
+export const ResultMetrics = z.object({
+  bookings: z.array(BookingSchema),
+  transactions: z.array(TransactionSchema),
+});
+
+
 export type IBookingRate = z.infer<typeof BookingRate>;
 export type ITransactionRate = z.infer<typeof TransactionRate>;
 export type IMetricsParams = z.infer<typeof MetricsParams>;
+export type IResultMetrics = z.infer<typeof ResultMetrics>;
 export type IClientMetrics = z.infer<typeof ClientMetrics>;
 export type IProviderMetrics = z.infer<typeof ProviderMetrics>;
 export type IGeneralMetrics = z.infer<typeof GeneralMetrics>;
